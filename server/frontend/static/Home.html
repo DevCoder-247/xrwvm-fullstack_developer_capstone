@@ -1,64 +1,273 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="static/style.css">
-  <link rel="stylesheet" href="static/bootstrap.min.css">
-<script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dealerships | Home</title>
 
-const logout = async (e) => {
-//Include the code for logout here.
-};
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
-let checkSession = ()=>{
-  let curr_user = sessionStorage.getItem("username");
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  if (curr_user && curr_user !== "") {
-    document.getElementById("loginlogout").innerHTML = 
-    '<span class="homepage_links">' + curr_user +'</span>' +
-    '<a class="homepage_links" onclick="logout()" href="/">Logout</a>'
-  } else {
-    document.getElementById("loginlogout").innerHTML = 
-    '<a class="homepage_links" href="/login">Login</a>'+
-    '<a class="homepage_links"  href="/register">Register</a>'
-  }
- }
-</script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Navbar styling */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: linear-gradient(90deg, #00b4d8, #0077b6);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .navbar h2 {
+      color: white;
+      font-weight: 600;
+    }
+
+    .nav-link {
+      color: white !important;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #caf0f8 !important;
+    }
+
+    /* Login/Register section */
+    .homepage_links {
+      margin-left: 10px;
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .homepage_links:hover {
+      color: #caf0f8;
+    }
+
+    .active {
+      border-bottom: 2px solid white;
+    }
+
+    /* Hero section */
+    .hero {
+      position: relative;
+      background: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 30px;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+    }
+
+    .hero-content .btn {
+      background-color: #00b4d8;
+      border: none;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      transition: background 0.3s;
+    }
+
+    .hero-content .btn:hover {
+      background-color: #0077b6;
+    }
+
+    /* Card section */
+    .info-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 60px 20px;
+      gap: 25px;
+    }
+
+    .info-card {
+      width: 300px;
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .info-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .info-card img {
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .info-card .card-body {
+      text-align: center;
+      background-color: white;
+    }
+
+    .info-card h5 {
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .info-card p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    footer {
+      background: #023e8a;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+
+    footer i {
+      margin: 0 8px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+      .hero-content p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+
+  <script>
+    const logout = async (e) => {
+      sessionStorage.removeItem("username");
+      window.location.href = "/";
+    };
+
+    let checkSession = () => {
+      let curr_user = sessionStorage.getItem("username");
+
+      if (curr_user && curr_user !== "") {
+        document.getElementById("loginlogout").innerHTML = 
+          '<span class="homepage_links"><i class="fa-solid fa-user"></i> ' + curr_user + '</span>' +
+          '<a class="homepage_links" onclick="logout()" href="#">Logout</a>';
+      } else {
+        document.getElementById("loginlogout").innerHTML = 
+          '<a class="homepage_links" href="/login"><i class="fa-solid fa-right-to-bracket"></i> Login</a>' +
+          '<a class="homepage_links" href="/register"><i class="fa-solid fa-user-plus"></i> Register</a>';
+      }
+    };
+  </script>
 </head>
+
 <body onload="checkSession()">
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color:darkturquoise; height: 1in;">
-  <div class="container-fluid">
-    <h2 style="padding-right: 5%;">Dealerships</h2>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" style="font-size: larger;" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" style="font-size: larger;" href="/about">About Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" style="font-size: larger;" href="/contact">Contact Us</a>
-        </li>
-      </ul>
-      <span class="navbar-text">
-        <div class="loginlink" id="loginlogout">
-        </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <h2><i class="fa-solid fa-car-side"></i> Dealerships</h2>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="/contact">Contact Us</a></li>
+        </ul>
+        <span class="navbar-text">
+          <div class="loginlink" id="loginlogout"></div>
         </span>
+      </div>
     </div>
-  </div>
-</nav>
-<div style="display: flex;flex-direction: column;">
-<div class="card" style="width: 50%;margin-top: 50px;align-self: center;">
-  <img src="static/car_dealership.jpg" class="card-img-top" alt="...">
-  <div class="banner">
-    <h5>Welcome to our Dealerships!</h5>
-    <a href="/dealers" class="btn" style="background-color: aqua;margin:10px">View Dealerships</a>
-  </div>
-</div>
-</div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Welcome to Premium Car Dealerships</h1>
+      <p>Your dream car is just one click away. Explore our trusted dealerships and unbeatable offers.</p>
+      <a href="/dealers" class="btn"><i class="fa-solid fa-car"></i> View Dealerships</a>
+    </div>
+  </section>
+
+  <!-- Info Cards -->
+  <section class="info-section">
+    <div class="card info-card">
+      <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Car Showroom">
+      <div class="card-body">
+        <h5><i class="fa-solid fa-building"></i> Trusted Showrooms</h5>
+        <p>Visit verified dealerships offering a wide range of new and pre-owned cars with great financing options.</p>
+      </div>
+    </div>
+
+    <div class="card info-card">
+      <img src="https://www.thesilverlining.com/hubfs/Tips%20for%20test%20driving%20a%20car.jpg" class="card-img-top" alt="Test Drive">
+      <div class="card-body">
+        <h5><i class="fa-solid fa-key"></i> Book Test Drives</h5>
+        <p>Experience the feel before you buy. Book a test drive at your nearest location online in minutes.</p>
+      </div>
+    </div>
+
+    <div class="card info-card">
+      <img src="https://www.cohesiveglobal.com/images/services/support-0.jpg" class="card-img-top" alt="Support">
+      <div class="card-body">
+        <h5><i class="fa-solid fa-headset"></i> 24/7 Support</h5>
+        <p>Our experts are available around the clock to assist you with your car-buying journey.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Premium Dealerships | All Rights Reserved</p>
+    <div>
+      <i class="fa-brands fa-facebook"></i>
+      <i class="fa-brands fa-instagram"></i>
+      <i class="fa-brands fa-twitter"></i>
+      <i class="fa-brands fa-linkedin"></i>
+    </div>
+  </footer>
+
 </body>
 </html>
