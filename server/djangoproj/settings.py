@@ -32,8 +32,16 @@ DEBUG = True
 # ALLOWED_HOSTS=['localhost','http://127.0.0.1:8000']
 # CSRF_TRUSTED_ORIGINS=['http://127.0.0.1:8000']
 
-ALLOWED_HOST=[]
-CSRF_TRUSTED_ORIGINS=[]
+# Allow localhost and your Theia proxy domain
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "abhaychikte2-8000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://abhaychikte2-8000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai",
+]
 
 
 REST_FRAMEWORK = {
@@ -50,6 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
 ]
 
 MIDDLEWARE = [
